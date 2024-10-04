@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APA Formatter</title>
+</head>
+<body>
+    <h1>Welcome to APA Formatter!</h1>
+    <form id="inputForm">
+        <textarea id="userInput" placeholder="Enter your text here..."></textarea><br>
+        <button type="button" onclick="processInput()">Format APA</button>
+    </form>
+    <p id="output"></p>
+
+    <script>
+        async function processInput() {
+            let userInput = document.getElementById("userInput").value;
+
+            try {
+                let response = await fetch('https://chatgpt.com/g/g-7TszYJVjM', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ prompt: userInput })
+                });
+
+                if (response.ok) {
+                    let data = await response.json();
+                    document.getElementById("output").innerHTML = data.output;  // Assuming the API returns {output: ...}
+                } else {
+                    document.getElementById("output").innerHTML = "Error: Unable to format text.";
+                }
+            } catch (error) {
+                document.getElementById("output").innerHTML = "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
